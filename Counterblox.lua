@@ -1,5 +1,5 @@
--- AMB Planks Script
-local gameName = "Planks"
+-- AMB CounterBlox Script
+local gameName = "CounterBlox"
 
 -- Services
 local Players = game:GetService("Players")
