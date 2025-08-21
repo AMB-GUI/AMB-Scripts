@@ -191,17 +191,17 @@ discordLabel.Parent = frame
 loadbtn.MouseButton1Click:Connect(function()
     if selectedOption then
         if selectedOption == "Arsenal" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/main/Roblox.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Arsenal.lua"))()
         elseif selectedOption == "Planks" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/main/Roblox.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Planks.lua"))()
         elseif selectedOption == "Rivals" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/main/Roblox.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Rivals.lua"))()
         elseif selectedOption == "Counterblox" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/main/Roblox.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Counterblox.lua"))()
         elseif selectedOption == "Gunfight Arena" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/main/Roblox.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/GunfightArena.lua"))()
         elseif selectedOption == "Universal" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/main/Roblox.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Universal.lua"))()
         end
     else
         warn("Please select a script!")
