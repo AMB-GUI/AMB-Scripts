@@ -1,4 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/other.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/Roblox.lua"))()
 
 local AMBLoader = Instance.new("ScreenGui")
 AMBLoader.Name = "AMB Loader"
