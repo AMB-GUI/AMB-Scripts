@@ -1,4 +1,5 @@
 -- AMB Arsenal Script
+local gameName = "Aresnal"
 
 -- Services
 local Players = game:GetService("Players")
