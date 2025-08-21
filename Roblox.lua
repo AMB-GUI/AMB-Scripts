@@ -1,8 +1,5 @@
--- AMB Loader GUI
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/other.lua"))()
 
--- Main GUI
 local AMBLoader = Instance.new("ScreenGui")
 AMBLoader.Name = "AMB Loader"
 AMBLoader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -11,7 +8,6 @@ AMBLoader.ResetOnSpawn = false
 AMBLoader.DisplayOrder = 999999
 AMBLoader.IgnoreGuiInset = true
 
--- Main Frame
 local frame = Instance.new("Frame")
 frame.Name = "Frame"
 frame.BackgroundColor3 = Color3.fromRGB(17, 18, 20)
@@ -21,58 +17,39 @@ frame.Position = UDim2.fromScale(0.0883, 0.11)
 frame.Size = UDim2.fromOffset(878, 524)
 frame.Parent = AMBLoader
 
--- Rounded corners
+-- Draggable
+frame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		local dragStart = input.Position
+		local frameStart = frame.Position
+
+		local connection
+		connection = game:GetService("UserInputService").InputChanged:Connect(function(inputChanged)
+			if inputChanged.UserInputType == Enum.UserInputType.MouseMovement then
+				local delta = inputChanged.Position - dragStart
+				frame.Position = UDim2.new(
+					frameStart.X.Scale,
+					frameStart.X.Offset + delta.X,
+					frameStart.Y.Scale,
+					frameStart.Y.Offset + delta.Y
+				)
+			end
+		end)
+
+		local endConnection
+		endConnection = game:GetService("UserInputService").InputEnded:Connect(function(inputEnded)
+			if inputEnded.UserInputType == Enum.UserInputType.MouseButton1 then
+				connection:Disconnect()
+				endConnection:Disconnect()
+			end
+		end)
+	end
+end)
+
 local uICorner = Instance.new("UICorner")
 uICorner.CornerRadius = UDim.new(0, 25)
 uICorner.Parent = frame
 
--- Draggable functionality
-do
-    local dragging = false
-    local dragInput, mousePos, framePos
-
-    frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            mousePos = input.Position
-            framePos = frame.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-
-    frame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
-
-    UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - mousePos
-            frame.Position = UDim2.new(
-                framePos.X.Scale,
-                framePos.X.Offset + delta.X,
-                framePos.Y.Scale,
-                framePos.Y.Offset + delta.Y
-            )
-        end
-    end)
-end
-
--- GUI Toggle with RightShift
-local guiVisible = true
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.RightShift then
-        guiVisible = not guiVisible
-        frame.Visible = guiVisible
-    end
-end)
-
--- Logo
 local logo = Instance.new("ImageLabel")
 logo.Name = "Logo"
 logo.BackgroundTransparency = 1
@@ -83,43 +60,42 @@ logo.AnchorPoint = Vector2.new(0.5, 0.5)
 logo.Size = UDim2.fromOffset(175, 175)
 logo.Parent = frame
 
--- Helper to create game buttons
+-- Game Buttons
 local function createGameButton(name, pos)
-    local btn = Instance.new("Frame")
-    btn.Name = name
-    btn.BackgroundColor3 = Color3.fromRGB(17, 18, 20)
-    btn.BackgroundTransparency = 0.9
-    btn.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    btn.BorderSizePixel = 0
-    btn.Position = pos
-    btn.Size = UDim2.fromOffset(330, 65)
-    btn.Parent = frame
+	local btn = Instance.new("Frame")
+	btn.Name = name
+	btn.BackgroundColor3 = Color3.fromRGB(17, 18, 20)
+	btn.BackgroundTransparency = 0.9
+	btn.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	btn.BorderSizePixel = 0
+	btn.Position = pos
+	btn.Size = UDim2.fromOffset(330, 65)
+	btn.Parent = frame
 
-    local stroke = Instance.new("UIStroke")
-    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    stroke.Color = Color3.fromRGB(26, 29, 37)
-    stroke.Thickness = 1.9
-    stroke.Parent = btn
+	local stroke = Instance.new("UIStroke")
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.Color = Color3.fromRGB(26, 29, 37)
+	stroke.Thickness = 1.9
+	stroke.Parent = btn
 
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 25)
-    corner.Parent = btn
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 25)
+	corner.Parent = btn
 
-    local label = Instance.new("TextLabel")
-    label.BackgroundTransparency = 1
-    label.Size = UDim2.fromOffset(197, 58)
-    label.Position = UDim2.fromScale(0.2, 0.0462)
-    label.Text = name
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextSize = 62
-    label.TextWrapped = true
-    label.Font = Enum.Font.Nunito
-    label.Parent = btn
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.Size = UDim2.fromOffset(197, 58)
+	label.Position = UDim2.fromScale(0.2, 0.0462)
+	label.Text = name
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.TextSize = 62
+	label.TextWrapped = true
+	label.Font = Enum.Font.Nunito
+	label.Parent = btn
 
-    return btn
+	return btn
 end
 
--- Game Buttons
 local arsenal = createGameButton("Arsenal", UDim2.fromScale(0.03, 0.0415))
 local planks = createGameButton("Planks", UDim2.fromScale(0.03, 0.188))
 local rivals = createGameButton("Rivals", UDim2.fromScale(0.0289, 0.34))
@@ -127,20 +103,27 @@ local counterblox = createGameButton("Counterblox", UDim2.fromScale(0.0277, 0.48
 local gunfightArena = createGameButton("Gunfight Arena", UDim2.fromScale(0.03, 0.65))
 local universal = createGameButton("Universal", UDim2.fromScale(0.0289, 0.806))
 
--- Selected Script
 local selectedOption = nil
-local function selectScript(btn, name)
-    selectedOption = name
-end
 
--- Connect buttons to selection
-for _, btn in pairs({arsenal, planks, rivals, counterblox, gunfightArena, universal}) do
-    btn.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            selectScript(btn, btn.Name)
-        end
-    end)
-end
+local textLabel6 = Instance.new("TextLabel")
+textLabel6.Parent = frame
+textLabel6.BackgroundTransparency = 1
+textLabel6.Position = UDim2.fromScale(0.645, 0.447)
+textLabel6.Size = UDim2.fromOffset(200, 50)
+textLabel6.Text = "No Script Selected"
+textLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
+textLabel6.TextSize = 34
+
+-- Discord
+local discordLabel = Instance.new("TextLabel")
+discordLabel.BackgroundTransparency = 1
+discordLabel.Size = UDim2.fromOffset(300, 30)
+discordLabel.Position = UDim2.fromScale(0.6, 0.95)
+discordLabel.Text = "Join our school Discord: discord.gg/qhr"
+discordLabel.TextColor3 = Color3.fromRGB(255,255,255)
+discordLabel.TextSize = 20
+discordLabel.Font = Enum.Font.Nunito
+discordLabel.Parent = frame
 
 -- Load Button
 local loadbtn = Instance.new("TextButton")
@@ -172,38 +155,72 @@ closeButton.TextColor3 = Color3.fromRGB(58, 67, 98)
 closeButton.TextScaled = true
 closeButton.Font = Enum.Font.FredokaOne
 closeButton.Parent = frame
+
 closeButton.MouseButton1Click:Connect(function()
-    AMBLoader:Destroy()
+	AMBLoader:Destroy()
 end)
 
--- Discord Label
-local discordLabel = Instance.new("TextLabel")
-discordLabel.BackgroundTransparency = 1
-discordLabel.Size = UDim2.fromOffset(300, 30)
-discordLabel.Position = UDim2.fromScale(0.6, 0.95)
-discordLabel.Text = "Join our school Discord: discord.gg/qhr"
-discordLabel.TextColor3 = Color3.fromRGB(255,255,255)
-discordLabel.TextSize = 20
-discordLabel.Font = Enum.Font.Nunito
-discordLabel.Parent = frame
+-- Button Selection Logic
+local function selectScript(scriptFrame, scriptName)
+	selectedOption = scriptName
+	textLabel6.Text = scriptName
+end
 
--- Load Button Logic (replace with your own GitHub URLs)
+arsenal.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		selectScript(arsenal, "Arsenal")
+	end
+end)
+
+planks.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		selectScript(planks, "Planks")
+	end
+end)
+
+rivals.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		selectScript(rivals, "Rivals")
+	end
+end)
+
+counterblox.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		selectScript(counterblox, "Counterblox")
+	end
+end)
+
+gunfightArena.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		selectScript(gunfightArena, "Gunfight Arena")
+	end
+end)
+
+universal.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		selectScript(universal, "Universal")
+	end
+end)
+
+-- Load scripts based on selection
 loadbtn.MouseButton1Click:Connect(function()
-    if selectedOption then
-        if selectedOption == "Arsenal" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Arsenal.lua"))()
-        elseif selectedOption == "Planks" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Planks.lua"))()
-        elseif selectedOption == "Rivals" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Rivals.lua"))()
-        elseif selectedOption == "Counterblox" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Counterblox.lua"))()
-        elseif selectedOption == "Gunfight Arena" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/GunfightArena.lua"))()
-        elseif selectedOption == "Universal" then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Universal.lua"))()
-        end
-    else
-        warn("Please select a script!")
-    end
+	if selectedOption then
+		if selectedOption == "Arsenal" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/AMB Arsenal.lua"))()
+		elseif selectedOption == "Planks" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/AMB Planks.lua"))()
+		elseif selectedOption == "Rivals" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/AMB Rivals.lua"))()
+		elseif selectedOption == "Counterblox" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/AMB Counterblox.lua"))()
+		elseif selectedOption == "Gunfight Arena" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/AMB Gunfight Arena.lua"))()
+		elseif selectedOption == "Universal" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/AMB-GUI/AMB-Scripts/refs/heads/main/Games/AMB Universal.lua"))()
+		end
+	else
+		textLabel6.Text = "Please select a script!"
+		wait(2)
+		textLabel6.Text = "No Script Selected"
+	end
 end)
